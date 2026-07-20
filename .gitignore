@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# Database
+*.db
+*.sqlite
+
+# Webcam shared state
+backend/webcam_results.json
+
+# MediaPipe model file (too large for git)
+backend/face_landmarker.task
+
+# Node / React
+node_modules/
+dist/
+.vite/
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db

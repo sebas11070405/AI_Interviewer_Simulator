@@ -1,0 +1,109 @@
+.start-screen {
+  width: 100%;
+  max-width: 100%;
+}
+
+.start-card {
+  max-width: 560px;
+}
+
+.start-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(232, 213, 176, 0.1);
+  border: 1px solid rgba(232, 213, 176, 0.2);
+  border-radius: 20px;
+  padding: 4px 12px;
+  width: fit-content;
+}
+
+.start-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 52px;
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--text);
+}
+
+.start-description {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.start-info {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px 0;
+}
+
+.info-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.info-number {
+  font-family: 'DM Serif Display', serif;
+  font-size: 28px;
+  color: var(--accent);
+}
+
+.info-label {
+  font-size: 12px;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.info-divider {
+  width: 1px;
+  height: 40px;
+  background: var(--border);
+}
+
+.start-error {
+  font-size: 13px;
+  color: var(--low);
+  background: rgba(224, 82, 82, 0.08);
+  border: 1px solid rgba(224, 82, 82, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+}
+
+.start-btn {
+  background: var(--accent);
+  color: #1a1609;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 14px 24px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.start-btn:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.start-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
