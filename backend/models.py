@@ -24,6 +24,8 @@ class Interview(Base):
     questions_json = Column(Text)
     user = relationship("User", back_populates="interviews")
     answers = relationship("Answer", back_populates="interview")
+    topic = Column(String(100), default="software engineering")
+    difficulty = Column(String(20), default="Medium")
 
 
 class Question(Base):

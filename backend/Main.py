@@ -60,6 +60,11 @@ class AnswerResponse(BaseModel):
     average_so_far: float
     complete: bool
 
+class StartSessionRequest(BaseModel):
+    topic: str = "software engineering"
+    difficulty: str = "Medium"
+    num_questions: int = 3
+
 # ---------------------------------------------------------------------------
 # Routes
 # ---------------------------------------------------------------------------
@@ -127,7 +132,7 @@ async def analyze_voice(audio: UploadFile = File(...)):
  
 
 @app.post("/sessions", response_model=StartSessionResponse)
-def start_session(num_questions: int = 3, db: Session = Depends(get_db)):
+def start_session(body: StartSessionRequest, db: Session = Depends(get_db)):
     """
     Start a new interview session.
     - Creates a guest user if needed
@@ -151,7 +156,11 @@ def start_session(num_questions: int = 3, db: Session = Depends(get_db)):
 
     # Generate questions via OpenAI
     try:
-        generated = generate_questions()
+        generated = generate_questions(
+            topic=body.topic,
+            difficulty=body.difficulty,
+            count=body.num_questions
+        )
     #except Exception as e:
     #    db.rollback()
     #    raise HTTPException(status_code=502, detail=f"Failed to generate questions: {str(e)}")

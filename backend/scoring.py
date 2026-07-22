@@ -12,25 +12,20 @@ client = OpenAI(
     max_retries=3,
     timeout=30.0
 )
-
-def evaluate_answer(question, answer):
-
+def evaluate_answer(question: str, answer: str, topic: str = "software engineering"):
     response = client.chat.completions.create(
         model="gpt-4.1-mini",
         messages=[
             {
                 "role": "system",
-                "content": """
-                You are a software engineering interviewer.
-
+                "content": f"""
+                You are an interviewer for the topic: {topic}.
                 Evaluate the following answer.
-
                 Return ONLY JSON:
-
-                {
+                {{
                     "score": 0,
                     "explanation": ""
-                }
+                }}
                 """
             },
             {
@@ -41,6 +36,7 @@ def evaluate_answer(question, answer):
     )
 
     content = response.choices[0].message.content.strip()
+    
     if content.startswith("```"):
         content = content.split("```")[1]
         if content.startswith("json"):

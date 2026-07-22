@@ -6,15 +6,25 @@ interface StartScreenProps {
   onSessionStarted: (session: StartSessionResponse) => void;
 }
 
+const DIFFICULTIES = ["Easy", "Medium", "Hard"];
+const QUESTION_COUNTS = [3, 5, 10];
+
 export default function StartScreen({ onSessionStarted }: StartScreenProps) {
+  const [topic, setTopic] = useState("");
+  const [difficulty, setDifficulty] = useState("Medium");
+  const [numQuestions, setNumQuestions] = useState(5);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   async function handleStart() {
+    if (!topic.trim()) {
+      setError("Please enter a topic.");
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
-      const session = await startSession(3);
+      const session = await startSession(topic.trim(), difficulty, numQuestions);
       onSessionStarted(session);
     } catch (err) {
       setError("Could not connect to the server. Is FastAPI running?");
@@ -25,27 +35,60 @@ export default function StartScreen({ onSessionStarted }: StartScreenProps) {
   return (
     <div className="start-screen">
       <div className="start-card">
-        <div className="start-badge">Software Engineering</div>
+        <div className="start-badge">AI Interview Simulator</div>
         <h1 className="start-title">Interview<br />Simulator</h1>
         <p className="start-description">
-          3 technical questions. Instant AI feedback.<br />
-          See how you really perform under pressure.
+          Enter any topic, choose a difficulty, and get instant AI feedback.
         </p>
 
-        <div className="start-info">
-          <div className="info-item">
-            <span className="info-number">3</span>
-            <span className="info-label">Questions</span>
+        <div className="start-form">
+          <div className="form-group">
+            <label className="form-label">Topic</label>
+            <input
+              className="form-input"
+              type="text"
+              placeholder="e.g. Python, Machine Learning, System Design…"
+              value={topic}
+              onChange={(e) => setTopic(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleStart()}
+              disabled={loading}
+            />
           </div>
-          <div className="info-divider" />
-          <div className="info-item">
-            <span className="info-number">AI</span>
-            <span className="info-label">Scoring</span>
-          </div>
-          <div className="info-divider" />
-          <div className="info-item">
-            <span className="info-number">10</span>
-            <span className="info-label">Points each</span>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label className="form-label">Difficulty</label>
+              <div className="btn-group">
+                {DIFFICULTIES.map((d) => (
+                  <button
+                    key={d}
+                    type="button"
+                    className={`btn-option ${difficulty === d ? "active" : ""}`}
+                    onClick={() => setDifficulty(d)}
+                    disabled={loading}
+                  >
+                    {d}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Questions</label>
+              <div className="btn-group">
+                {QUESTION_COUNTS.map((n) => (
+                  <button
+                    key={n}
+                    type="button"
+                    className={`btn-option ${numQuestions === n ? "active" : ""}`}
+                    onClick={() => setNumQuestions(n)}
+                    disabled={loading}
+                  >
+                    {n}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -54,7 +97,7 @@ export default function StartScreen({ onSessionStarted }: StartScreenProps) {
         <button
           className={`start-btn ${loading ? "loading" : ""}`}
           onClick={handleStart}
-          disabled={loading}
+          disabled={loading || !topic.trim()}
         >
           {loading ? (
             <>

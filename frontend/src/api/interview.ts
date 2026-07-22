@@ -24,9 +24,15 @@ export interface SessionSummary {
   }[];
 }
 
-export async function startSession(numQuestions = 3): Promise<StartSessionResponse> {
-  const res = await fetch(`${BASE_URL}/sessions?num_questions=${numQuestions}`, {
+export async function startSession(
+  topic: string,
+  difficulty: string,
+  numQuestions: number
+): Promise<StartSessionResponse> {
+  const res = await fetch(`${BASE_URL}/sessions`, {
     method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ topic, difficulty, num_questions: numQuestions }),
   });
   if (!res.ok) throw new Error("Failed to start session");
   return res.json();
